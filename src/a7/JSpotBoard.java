@@ -88,10 +88,13 @@ public class JSpotBoard extends JPanel implements SpotBoard {
 	
 	@Override
 	public void removeSpotListener(SpotListener spot_listener) {
-		for (int x=0; x<getSpotWidth(); x++) {
-			for (int y=0; y<getSpotHeight(); y++) {
-				_spots[x][y].removeSpotListener(spot_listener);
-			}
+//		for (int x=0; x<getSpotWidth(); x++) {
+//			for (int y=0; y<getSpotHeight(); y++) {
+//				_spots[x][y].removeSpotListener(spot_listener);
+//			}
+//		}
+		for (Spot s : this) {
+			s.addSpotListener(spot_listener);
 		}
 	}
 
