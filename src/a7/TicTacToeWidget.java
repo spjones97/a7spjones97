@@ -50,6 +50,7 @@ public class TicTacToeWidget extends JPanel implements ActionListener, SpotListe
         // Clear all spots on the board
         for (Spot s : _board) {
             s.clearSpot();
+            s.setSpotColor(new Color(0.8f, 0.8f, 0.8f));
         }
 
         // Reset game won and next to play fields
@@ -93,19 +94,23 @@ public class TicTacToeWidget extends JPanel implements ActionListener, SpotListe
         }
 
         // Set color of spot clicked and toggle
-        spot.setSpotColor(playerColor);
-        spot.toggleSpot();
+        if (spot.isEmpty()) {
+            spot.setSpotColor(playerColor);
+            spot.toggleSpot();
+        } else {
+            return;
+        }
 
         // Check to see if player has three spots in a row
-        for (int i = 0; i < _board.getHeight(); i++) {
-            if (_board.getSpotAt(0, i).getSpotColor() == playerColor &&
-                    _board.getSpotAt(1, i).getSpotColor() == playerColor &&
-                    _board.getSpotAt(2, i).getSpotColor() == playerColor) {
-                _gameWon = true;
-            }
+        for (int i = 0; i < 3; i++) {
             if (_board.getSpotAt(i, 0).getSpotColor() == playerColor &&
                     _board.getSpotAt(i, 1).getSpotColor() == playerColor &&
                     _board.getSpotAt(i, 2).getSpotColor() == playerColor) {
+                _gameWon = true;
+            }
+            if (_board.getSpotAt(0, i).getSpotColor() == playerColor &&
+                    _board.getSpotAt(1, i).getSpotColor() == playerColor &&
+                    _board.getSpotAt(2, i).getSpotColor() == playerColor) {
                 _gameWon = true;
             }
             if (_board.getSpotAt(0, 0).getSpotColor() == playerColor &&
@@ -118,34 +123,6 @@ public class TicTacToeWidget extends JPanel implements ActionListener, SpotListe
                     _board.getSpotAt(2, 0).getSpotColor() == playerColor) {
                 _gameWon = true;
             }
-//            if (_board.getSpotAt(0, i).getSpotColor() == playerColor) {
-//                if (_board.getSpotAt(1, i).getSpotColor() == playerColor) {
-//                    if (_board.getSpotAt(2, i).getSpotColor() == playerColor) {
-//
-//                    }
-//                }
-//            }
-//            if (_board.getSpotAt(i, 0).getSpotColor() == playerColor) {
-//                if (_board.getSpotAt(i, 1).getSpotColor() == playerColor) {
-//                    if (_board.getSpotAt(i, 2).getSpotColor() == playerColor) {
-//
-//                    }
-//                }
-//            }
-//            if (_board.getSpotAt(0, 0).getSpotColor() == playerColor) {
-//                if (_board.getSpotAt(1, 1).getSpotColor() == playerColor) {
-//                    if (_board.getSpotAt(2, 2).getSpotColor() == playerColor) {
-//
-//                    }
-//                }
-//            }
-//            if (_board.getSpotAt(0, 2).getSpotColor() == playerColor) {
-//                if (_board.getSpotAt(1, 1).getSpotColor() == playerColor) {
-//                    if (_board.getSpotAt(2, 0).getSpotColor() == playerColor) {
-//
-//                    }
-//                }
-//            }
         }
 
         if (_gameWon) {
@@ -158,11 +135,11 @@ public class TicTacToeWidget extends JPanel implements ActionListener, SpotListe
     @Override
     public void spotEntered(Spot spot) {
         // Highlight spot if game is not over
-        if (_gameWon) {
+        if (spot.isEmpty() && !_gameWon) {
+            spot.highlightSpot();
+        } else {
             return;
         }
-        spot.highlightSpot();
-
     }
 
     @Override

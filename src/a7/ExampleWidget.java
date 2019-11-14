@@ -201,7 +201,6 @@ public class ExampleWidget extends JPanel implements ActionListener, SpotListene
 	@Override
 	public void spotExited(Spot s) {
 		/* Unhighlight spot. */
-		
 		s.unhighlightSpot();
 	}
 	

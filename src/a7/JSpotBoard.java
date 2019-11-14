@@ -26,8 +26,7 @@ public class JSpotBoard extends JPanel implements SpotBoard {
 
 	private static final int DEFAULT_SCREEN_WIDTH = 500;
 	private static final int DEFAULT_SCREEN_HEIGHT = 500;
-	private static final Color DEFAULT_BACKGROUND_LIGHT = new Color(0.8f, 0.8f, 0.8f);
-	private static final Color DEFAULT_BACKGROUND_DARK = new Color(0.5f, 0.5f, 0.5f);
+	private static final Color DEFAULT_BACKGROUND = new Color(0.8f, 0.8f, 0.8f);
 	private static final Color DEFAULT_SPOT_COLOR = Color.BLACK;
 	private static final Color DEFAULT_HIGHLIGHT_COLOR = Color.YELLOW;
 
@@ -44,7 +43,7 @@ public class JSpotBoard extends JPanel implements SpotBoard {
 		
 		for (int y=0; y<height; y++) {
 			for (int x=0; x<width; x++) {
-				Color bg = ((x+y)%2 == 0) ? DEFAULT_BACKGROUND_LIGHT : DEFAULT_BACKGROUND_DARK;
+				Color bg = DEFAULT_BACKGROUND;
 				_spots[x][y] = new JSpot(bg, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
 				((JSpot)_spots[x][y]).setPreferredSize(preferred_size);
 				add(((JSpot) _spots[x][y]));
