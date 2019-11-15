@@ -95,16 +95,21 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
         // Set color of lowest spot on column clicked and toggle
         int xValue = spot.getSpotX();
         for (int i = 0; i < 6; i++) {
+            if (!_board.getSpotAt(xValue, 0).isEmpty()) {
+                break;
+            }
             if (i != 5) {
                 if (_board.getSpotAt(xValue, i).isEmpty() &&
                     !_board.getSpotAt(xValue, (i + 1)).isEmpty()) {
                     _board.getSpotAt(xValue, i).setSpotColor(playerColor);
                     _board.getSpotAt(xValue, i).toggleSpot();
+                    _message.setText(nextPlayerName + "'s turn");
                     break;
                 }
             } else if (i == 5) {
                 _board.getSpotAt(xValue, i).setSpotColor(playerColor);
                 _board.getSpotAt(xValue, i).toggleSpot();
+                _message.setText(nextPlayerName + "'s turn");
                 break;
             }
         }
