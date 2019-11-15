@@ -69,7 +69,45 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
 
     @Override
     public void spotClicked(Spot spot) {
+        // If game already won, do nothing
+        if (_gameWon) {
+            return;
+        }
 
+        // Set up player and next player name strings
+        // Set up player color as local variables to be used later
+        String playerName = null;
+        String nextPlayerName = null;
+        Color playerColor = null;
+
+        if (_nextToPlay == Player.RED) {
+            playerColor = Color.RED;
+            playerName = "Red";
+            nextPlayerName = "Black";
+            _nextToPlay = Player.BLACK;
+        } else {
+            playerColor = Color.BLACK;
+            playerName = "Black";
+            nextPlayerName = "Red";
+            _nextToPlay = Player.RED;
+        }
+
+        // Set color of lowest spot on column clicked and toggle
+        int xValue = spot.getSpotX();
+        for (int i = 0; i < 6; i++) {
+            if (i != 5) {
+                if (_board.getSpotAt(xValue, i).isEmpty() &&
+                    !_board.getSpotAt(xValue, (i + 1)).isEmpty()) {
+                    _board.getSpotAt(xValue, i).setSpotColor(playerColor);
+                    _board.getSpotAt(xValue, i).toggleSpot();
+                    break;
+                }
+            } else if (i == 5) {
+                _board.getSpotAt(xValue, i).setSpotColor(playerColor);
+                _board.getSpotAt(xValue, i).toggleSpot();
+                break;
+            }
+        }
     }
 
     @Override
