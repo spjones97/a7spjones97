@@ -124,9 +124,20 @@ public class TicTacToeWidget extends JPanel implements ActionListener, SpotListe
                 _gameWon = true;
             }
         }
+        // Check to see if board is full
+        boolean isFull = true;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (_board.getSpotAt(i, j).isEmpty()) {
+                    isFull = false;
+                }
+            }
+        }
 
         if (_gameWon) {
             _message.setText(playerName + " got three in a row. Game over.");
+        } else if (isFull && !_gameWon) {
+            _message.setText("Draw. Restart to play again.");
         } else {
             _message.setText(nextPlayerName + " to play.");
         }
