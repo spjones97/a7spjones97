@@ -18,7 +18,7 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
 
     public ConnectFourWidget() {
 
-        // Create SpotBoard and messae label
+        // Create SpotBoard and message label
         _board = new JSpotBoard(7, 6);
         _message = new JLabel();
 
@@ -113,6 +113,257 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
                 break;
             }
         }
+
+        // Check horizontal connect four
+        if (checkX(playerColor)) {
+            _gameWon = true;
+        } else if (checkY(playerColor)) {
+            _gameWon = true;
+        } else if (checkBackSlash(playerColor)) {
+            _gameWon = true;
+        } else if (checkForwardSlash(playerColor)) {
+            _gameWon = true;
+        }
+
+        if (_gameWon) {
+            _message.setText(playerName + " got four in a row. Game over.");
+        } else {
+            _message.setText(nextPlayerName + " to play.");
+        }
+    }
+
+    protected boolean checkX(Color c) {
+        for (int y = 0; y < 6; y++) {
+            for (int x = 0; x < 4; x++) {
+                boolean four = true;
+                int counter = x;
+                while (counter < (x + 4) && counter < 7) {
+                    if (_board.getSpotAt(counter, y).getSpotColor() != c) {
+                        four = false;
+                    }
+                    counter += 1;
+                }
+                if (four) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected boolean checkY(Color c) {
+        for (int x = 0; x < 6; x++) {
+            for (int y = 0; y < 3; y++) {
+                boolean four = true;
+                int counter = y;
+                while (counter < (y + 4) && counter < 6) {
+                    if (_board.getSpotAt(x, counter).getSpotColor() != c) {
+                        four = false;
+                    }
+                    counter += 1;
+                }
+                if (four) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected boolean checkBackSlash(Color c) {
+        boolean four = true;
+        int y = 2;
+        for (int x = 0; x < 4; x+=1, y+=1) {
+            if (_board.getSpotAt(x, y).getSpotColor() != c) {
+                four = false;
+            }
+        }
+        if (four) {
+            return true;
+        }
+
+        y = 1;
+        for (int x = 0; x < 2; x += 1, y += 1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 5) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY += 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        for (int xy = 0; xy < 3; xy += 1) {
+            four = true;
+            int counter = xy;
+            while(counter < (xy + 4) && counter < 6) {
+                if (_board.getSpotAt(counter, counter).getSpotColor() != c) {
+                    four = false;
+                }
+                counter += 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y = 0;
+        for (int x = 1; x < 4; x+=1, y+=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 7) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY += 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y = 0;
+        for (int x = 2; x < 4; x+=1, y+=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 7) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY += 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y=0;
+        for (int x = 3; x < 4; x+=1, y+=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 7) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY += 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected boolean checkForwardSlash(Color c) {
+        boolean four = true;
+        int y = 0;
+        for (int x = 3; x >= 0; x-=1, y+=1) {
+            if (_board.getSpotAt(x, y).getSpotColor() != c) {
+                four = false;
+            }
+        }
+        if (four) {
+            return true;
+        }
+
+        y = 4;
+        for (int x = 0; x < 2; x+=1, y-=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 5) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY -= 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y = 5;
+        for (int x = 0; x < 3; x+=1, y-=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 6) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY -= 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y = 5;
+        for (int x = 1; x < 4; x+=1, y-=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 7) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY -= 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y = 5;
+        for (int x = 2; x < 4; x+=1, y-=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 7) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY -= 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        y=5;
+        for (int x = 3; x < 4; x+=1, y-=1) {
+            four = true;
+            int counterX = x;
+            int counterY = y;
+            while (counterX < (x + 4) && counterX < 7) {
+                if (_board.getSpotAt(counterX, counterY).getSpotColor() != c) {
+                    four = false;
+                }
+                counterX += 1;
+                counterY -= 1;
+            }
+            if (four) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
@@ -126,7 +377,7 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
             }
         }
 
-        if (isOpen) {
+        if (isOpen && !_gameWon) {
             for (int i = 0; i < 6; i++) {
                 _board.getSpotAt(xValue, i).highlightSpot();
             }
