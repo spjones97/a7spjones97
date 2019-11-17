@@ -114,7 +114,17 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
             }
         }
 
-        // Check horizontal connect four
+        // Check to see if board is full
+        boolean isFull = true;
+        for (int x = 0; x < 7; x++) {
+            for (int y = 0; y < 6; y++) {
+                if (_board.getSpotAt(x, y).isEmpty()) {
+                    isFull = false;
+                }
+            }
+        }
+
+        // Check to see if current play won
         if (checkX(playerColor)) {
             _gameWon = true;
         } else if (checkY(playerColor)) {
@@ -127,6 +137,8 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
 
         if (_gameWon) {
             _message.setText(playerName + " got four in a row. Game over.");
+        } else if (isFull && !_gameWon) {
+            _message.setText("Draw. Restart to play again.");
         } else {
             _message.setText(nextPlayerName + " to play.");
         }
