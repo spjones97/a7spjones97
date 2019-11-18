@@ -50,7 +50,7 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
         // Clear all spots on the board
         for (Spot s : _board) {
             s.clearSpot();
-            s.setSpotColor(new Color(0.8f, 0.8f, 0.8f));
+            s.setSpotColor(s.getBackground());
         }
 
         // Reset gameWon and nextToPlay fields
