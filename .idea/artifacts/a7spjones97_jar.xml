@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="a7spjones97:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/a7spjones97_jar</output-path>
+    <root id="archive" name="a7spjones97.jar">
+      <element id="module-output" name="a7spjones97" />
+    </root>
+  </artifact>
+</component>

@@ -51,10 +51,6 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             s.clearSpot();
             s.setSpotColor(s.getBackground());
         }
-        _board.getSpotAt(3, 3).setSpotColor(Color.WHITE);
-        _board.getSpotAt(4, 4).setSpotColor(Color.WHITE);
-        _board.getSpotAt(4, 3).setSpotColor(Color.BLACK);
-        _board.getSpotAt(3, 4).setSpotColor(Color.BLACK);
 
         // Reset gameWont and nextToPlay fields
         _gameWon = false;
@@ -66,12 +62,42 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        // Handles reset button
+        resetGame();
     }
 
     @Override
     public void spotClicked(Spot spot) {
+        // If game already won, do nothing
+        if (_gameWon) {
+            return;
+        }
 
+        // Set up player and next player name strings
+        // Set up player color as local variables to be used later
+        String playerName = null;
+        String nextPlayerName = null;
+        Color playerColor = null;
+
+        if (_nextToPlay == Player.WHITE) {
+            playerColor = Color.WHITE;
+            playerName = "White";
+            nextPlayerName = "Black";
+            _nextToPlay = Player.BLACK;
+        } else {
+            playerColor = Color.BLACK;
+            playerName = "Black";
+            nextPlayerName = "White";
+            _nextToPlay = Player.WHITE;
+        }
+
+        // Set color of spot clicked and toggle
+        if (spot.isEmpty()) {
+            spot.setSpotColor(playerColor);
+            spot.toggleSpot();
+        } else {
+            return;
+        }
     }
 
     @Override

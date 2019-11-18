@@ -55,7 +55,16 @@ public class JSpotBoard extends JPanel implements SpotBoard {
 		} else if (width == 7) {
 			for (int y=0; y<height; y++) {
 				for (int x=0; x<width; x++) {
-					Color bg = ((x)%2 == 0) ? DEFAULT_BACKGROUND_LIGHT : DEFAULT_BACKGROUND_DARK;
+					Color bg = ((x) % 2 == 0) ? DEFAULT_BACKGROUND_LIGHT : DEFAULT_BACKGROUND_DARK;
+					_spots[x][y] = new JSpot(bg, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
+					((JSpot)_spots[x][y]).setPreferredSize(preferred_size);
+					add(((JSpot) _spots[x][y]));
+				}
+			}
+		} else if (width == 8){
+			for (int y=0; y<height; y++) {
+				for (int x=0; x<width; x++) {
+					Color bg = ((x+y)%2 == 0) ? DEFAULT_BACKGROUND_LIGHT : DEFAULT_BACKGROUND_DARK;
 					_spots[x][y] = new JSpot(bg, DEFAULT_SPOT_COLOR, DEFAULT_HIGHLIGHT_COLOR, this, x, y);
 					((JSpot)_spots[x][y]).setPreferredSize(preferred_size);
 					add(((JSpot) _spots[x][y]));
