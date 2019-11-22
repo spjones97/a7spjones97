@@ -76,10 +76,8 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
         // Check to see if column is full
         boolean isOpen = false;
         int someXValue = spot.getSpotX();
-        for (int i = 0; i < 6; i++) {
-            if (_board.getSpotAt(someXValue, i).isEmpty()) {
-                isOpen = true;
-            }
+        if (_board.getSpotAt(someXValue, 0).isEmpty()) {
+            isOpen = true;
         }
         if (!isOpen) {
             return;
@@ -175,7 +173,7 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
     }
 
     protected boolean checkY(Color c) {
-        for (int x = 0; x < 6; x++) {
+        for (int x = 0; x < 7; x++) {
             for (int y = 0; y < 3; y++) {
                 boolean four = true;
                 int counter = y;
