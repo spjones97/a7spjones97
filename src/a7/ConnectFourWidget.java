@@ -73,6 +73,17 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
         if (_gameWon) {
             return;
         }
+        // Check to see if column is full
+        boolean isOpen = false;
+        int someXValue = spot.getSpotX();
+        for (int i = 0; i < 6; i++) {
+            if (_board.getSpotAt(someXValue, i).isEmpty()) {
+                isOpen = true;
+            }
+        }
+        if (!isOpen) {
+            return;
+        }
 
         // Set up player and next player name strings
         // Set up player color as local variables to be used later
@@ -93,7 +104,6 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
         }
 
         // Set color of lowest spot on column clicked and toggle
-
         int xValue = spot.getSpotX();
         for (int i = 0; i < 6; i++) {
             if (!_board.getSpotAt(xValue, 0).isEmpty()) {
