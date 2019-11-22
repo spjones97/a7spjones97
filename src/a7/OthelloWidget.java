@@ -104,6 +104,10 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
         String nextPlayerName = null;
         Color playerColor = null;
 
+        if (!isValidMove(spot)) {
+            return;
+        }
+
         if (_nextToPlay == Player.WHITE) {
             playerColor = Color.WHITE;
             playerName = "White";
@@ -123,12 +127,82 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
         } else {
             return;
         }
+
+        boolean isFull = true;
+        for (int x = 0; x < _board.getSpotWidth(); x++) {
+            for (int y = 0; y < _board.getSpotHeight(); y++) {
+                if (_board.getSpotAt(x, y).isEmpty()) {
+                    isFull = false;
+                }
+            }
+        }
+
+        if (isFull) {
+            _gameWon = true;
+        } else {
+            _message.setText(nextPlayerName + " to play.");
+        }
+    }
+
+    public boolean isValidMove(Spot s) {
+        // Initialize spot x and y
+        int x = s.getSpotX();
+        int y = s.getSpotY();
+
+        // Initialize players
+        Color playerColor;
+        Color opponentColor;
+        if (_nextToPlay == Player.WHITE) {
+            playerColor = Color.WHITE;
+            opponentColor = Color.BLACK;
+        } else {
+            playerColor = Color.BLACK;
+            opponentColor = Color.WHITE;
+        }
+
+        // Check horizontal right
+        if (x < _board.getSpotWidth() - 1 && _board.getSpotAt(x+1, y).getSpotColor() == opponentColor) {
+            for (int i = x; i < _board.getSpotWidth(); i++) {
+                if (_board.getSpotAt(i, y).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Check horizontal left
+        if (x > 0 && _board.getSpotAt(x-1, y).getSpotColor() == opponentColor) {
+            for (int i = x; i >= 0; i--) {
+                if (_board.getSpotAt(i, y).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Check vertical down
+        if (y < _board.getSpotHeight() - 1 && _board.getSpotAt(x, y+1).getSpotColor() == opponentColor) {
+            for (int i = y; i < _board.getSpotHeight(); i++) {
+                if (_board.getSpotAt(x, i).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Check vertical up
+        if (y > 0 && _board.getSpotAt(x, y-1).getSpotColor() == opponentColor) {
+            for (int i = y; i >= 0; i--) {
+                if (_board.getSpotAt(x, i).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     @Override
     public void spotEntered(Spot spot) {
-        // Highlight spot if game is not over
-        if (spot.isEmpty() && !_gameWon) {
+        // Highlight if spot is a valid move
+        if (!_gameWon && spot.isEmpty() && isValidMove(spot)) {
             spot.highlightSpot();
         } else {
             return;
