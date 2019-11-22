@@ -18,7 +18,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
 
     public OthelloWidget() {
         // Create SpotBoard and message label
-        _board = new JSpotBoard(8, 6);
+        _board = new JSpotBoard(6, 6);
         _message = new JLabel();
 
         // Set layout and place SpotBoard at the center
@@ -52,12 +52,37 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             s.setSpotColor(s.getBackground());
         }
 
+        for (int col = 0; col < _board.getSpotWidth(); col++) {
+            for (int row = 0; row < _board.getSpotHeight(); row++) {
+                if (col == (_board.getSpotWidth() / 2 - 1) &&
+                    row == (_board.getSpotHeight() / 2 - 1)) {
+                    _board.getSpotAt(col, row).setSpotColor(Color.WHITE);
+                    _board.getSpotAt(col, row).toggleSpot();
+                }
+                if (col == (_board.getSpotWidth() / 2) &&
+                        row == (_board.getSpotHeight() / 2)) {
+                    _board.getSpotAt(col, row).setSpotColor(Color.WHITE);
+                    _board.getSpotAt(col, row).toggleSpot();
+                }
+                if (col == (_board.getSpotWidth() / 2) &&
+                        row == (_board.getSpotHeight() / 2 - 1)) {
+                    _board.getSpotAt(col, row).setSpotColor(Color.BLACK);
+                    _board.getSpotAt(col, row).toggleSpot();
+                }
+                if (col == (_board.getSpotWidth() / 2 - 1) &&
+                        row == (_board.getSpotHeight() / 2)) {
+                    _board.getSpotAt(col, row).setSpotColor(Color.BLACK);
+                    _board.getSpotAt(col, row).toggleSpot();
+                }
+            }
+        }
+
         // Reset gameWont and nextToPlay fields
         _gameWon = false;
-        _nextToPlay = Player.WHITE;
+        _nextToPlay = Player.BLACK;
 
         // Display game start message
-        _message.setText("Welcome to Othello. White to play");
+        _message.setText("Welcome to Othello. Black to play");
     }
 
     @Override
