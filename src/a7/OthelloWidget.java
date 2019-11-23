@@ -196,6 +196,46 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             }
         }
 
+        // Check forward slash right
+        if (x < _board.getSpotWidth() - 1 && y > 0 && _board.getSpotAt(x + 1, y - 1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j < _board.getSpotWidth() && i >= 0; j++, i--) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Check forward slash left
+        if (x > 0 && y < _board.getSpotHeight() - 1 && _board.getSpotAt(x - 1, y + 1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j >= 0 && i < _board.getSpotHeight(); j--, i++) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Check back slash right
+        if (x < _board.getSpotWidth() - 1 && y < _board.getSpotHeight() - 1 && _board.getSpotAt(x + 1, y + 1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j < _board.getSpotWidth() && i < _board.getSpotHeight(); i++, j++) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
+        // Check back slash left
+        if (x > 0 && y > 0 && _board.getSpotAt(x-1, y-1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j >= 0 && i >= 0; j--, i--) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
