@@ -104,7 +104,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
         String nextPlayerName = null;
         Color playerColor = null;
 
-        if (!isValidMove(spot)) {
+        if (!isValidBoolean(spot)) {
             return;
         }
 
@@ -120,31 +120,179 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             _nextToPlay = Player.WHITE;
         }
 
+        boolean canMove = canMove();
+
         // Set color of spot clicked and toggle
-        if (spot.isEmpty()) {
+        if (spot.isEmpty() && canMove) {
             spot.setSpotColor(playerColor);
             spot.toggleSpot();
         } else {
             return;
         }
 
+        // Flip spots
+        int x = spot.getSpotX();
+        int y = spot.getSpotY();
+        Color opponentColor;
+        if (_nextToPlay == Player.WHITE) {
+            opponentColor = Color.WHITE;
+        } else {
+            opponentColor = Color.BLACK;
+        }
+        // horizontal right
+        if (x < _board.getSpotWidth() - 1 && _board.getSpotAt(x+1, y).getSpotColor() == opponentColor) {
+            for (int i = x; i < _board.getSpotWidth(); i++) {
+                if (_board.getSpotAt(i, y).getSpotColor() == playerColor) {
+                    flipHorizontal(x, y, i, y, playerColor);
+                }
+            }
+        }
+        // horizontal left
+        if (x > 0 && _board.getSpotAt(x-1, y).getSpotColor() == opponentColor) {
+            for (int i = x; i >= 0; i--) {
+                if (_board.getSpotAt(i, y).getSpotColor() == playerColor) {
+                    flipHorizontal(i, y, x, y, playerColor);
+                }
+            }
+        }
+        // vertical down
+        if (y < _board.getSpotHeight() - 1 && _board.getSpotAt(x, y+1).getSpotColor() == opponentColor) {
+            for (int i = y; i < _board.getSpotHeight(); i++) {
+                if (_board.getSpotAt(x, i).getSpotColor() == playerColor) {
+                    flipVertical(x, y, x, i, playerColor);
+                }
+            }
+        }
+        // vertical up
+        if (y > 0 && _board.getSpotAt(x, y-1).getSpotColor() == opponentColor) {
+            for (int i = y; i >= 0; i--) {
+                if (_board.getSpotAt(x, i).getSpotColor() == playerColor) {
+                    flipVertical(x, i, x, y, playerColor);
+                }
+            }
+        }
+        // forward slash right
+        if (x < _board.getSpotWidth() - 1 && y > 0 && _board.getSpotAt(x + 1, y - 1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j < _board.getSpotWidth() && i >= 0; j++, i--) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    flipForwardSlash(x, y, j, i, playerColor);
+                }
+            }
+        }
+        // forward slash left
+        if (x > 0 && y < _board.getSpotHeight() - 1 && _board.getSpotAt(x - 1, y + 1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j >= 0 && i < _board.getSpotHeight(); j--, i++) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    flipForwardSlash(j, i, x, y, playerColor);
+                }
+            }
+        }
+        // back slash right
+        if (x < _board.getSpotWidth() - 1 && y < _board.getSpotHeight() - 1 && _board.getSpotAt(x + 1, y + 1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j < _board.getSpotWidth() && i < _board.getSpotHeight(); i++, j++) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    flipBackSlash(j, i, x, y, playerColor);
+                }
+            }
+        }
+        // back slash left
+        if (x > 0 && y > 0 && _board.getSpotAt(x-1, y-1).getSpotColor() == opponentColor) {
+            int i = y;
+            for (int j = x; j >= 0 && i >= 0; j--, i--) {
+                if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
+                    flipBackSlash(x, y, j, i, playerColor);
+                }
+            }
+        }
+
+
         boolean isFull = true;
-        for (int x = 0; x < _board.getSpotWidth(); x++) {
-            for (int y = 0; y < _board.getSpotHeight(); y++) {
-                if (_board.getSpotAt(x, y).isEmpty()) {
+        for (int i = 0; i < _board.getSpotWidth(); i++) {
+            for (int j = 0; j < _board.getSpotHeight(); j++) {
+                if (_board.getSpotAt(i, j).isEmpty()) {
                     isFull = false;
                 }
             }
         }
 
-        if (isFull) {
+        if (isFull || !canMove) {
+            int black = 0;
+            int white = 0;
             _gameWon = true;
+            for (int i = 0; i < _board.getSpotWidth(); i++) {
+                for (int j = 0; j < _board.getSpotHeight(); j++) {
+                    if (_board.getSpotAt(i, j).getSpotColor() == Color.BLACK) {
+                        black++;
+                    } else if (_board.getSpotAt(i, j).getSpotColor() == Color.WHITE) {
+                        white++;
+                    }
+                }
+            }
+            if (black > white) {
+                _message.setText("Black won with score: " + black);
+            } else if (white > black) {
+                _message.setText("White won with score " + white);
+            } else {
+                _message.setText("Draw");
+            }
         } else {
             _message.setText(nextPlayerName + " to play.");
         }
     }
 
-    public boolean isValidMove(Spot s) {
+    public void flipHorizontal(int x1, int y1, int x2, int y2, Color c) {
+        for (int i = x1; i <= x2; i++) {
+            for (int j = y1; j <= y2; j++) {
+                _board.getSpotAt(i, j).clearSpot();
+                _board.getSpotAt(i, j).setSpotColor(c);
+                _board.getSpotAt(i, j).toggleSpot();
+            }
+        }
+    }
+
+    public void flipVertical(int x1, int y1, int x2, int y2, Color c) {
+        for (int i = x1; i <= x2; i++) {
+            for (int j = y1; j <= y2; j++) {
+                _board.getSpotAt(i, j).clearSpot();
+                _board.getSpotAt(i, j).setSpotColor(c);
+                _board.getSpotAt(i, j).toggleSpot();
+            }
+        }
+    }
+
+    public void flipForwardSlash(int x1, int y1, int x2, int y2, Color c) {
+        int j = y1;
+        for (int i = x1; i <= x2 && j >= y2; i++, j--) {
+            _board.getSpotAt(i, j).clearSpot();
+            _board.getSpotAt(i, j).setSpotColor(c);
+            _board.getSpotAt(i, j).toggleSpot();
+        }
+    }
+
+    public void flipBackSlash(int x1, int y1, int x2, int y2, Color c) {
+        int j = y1;
+        for (int i = x1; i >= x2 && j >= y2; i--, j--) {
+            _board.getSpotAt(i, j).clearSpot();
+            _board.getSpotAt(i, j).setSpotColor(c);
+            _board.getSpotAt(i, j).toggleSpot();
+        }
+    }
+
+    public boolean canMove() {
+        for (int i = 0; i < _board.getSpotWidth(); i++) {
+            for (int j = 0; j < _board.getSpotHeight(); j++) {
+                if (isValidBoolean(_board.getSpotAt(i, j))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isValidBoolean(Spot s) {
         // Initialize spot x and y
         int x = s.getSpotX();
         int y = s.getSpotY();
@@ -159,12 +307,13 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             playerColor = Color.BLACK;
             opponentColor = Color.WHITE;
         }
+        boolean isValid = false;
 
         // Check horizontal right
         if (x < _board.getSpotWidth() - 1 && _board.getSpotAt(x+1, y).getSpotColor() == opponentColor) {
             for (int i = x; i < _board.getSpotWidth(); i++) {
                 if (_board.getSpotAt(i, y).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -173,7 +322,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
         if (x > 0 && _board.getSpotAt(x-1, y).getSpotColor() == opponentColor) {
             for (int i = x; i >= 0; i--) {
                 if (_board.getSpotAt(i, y).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -182,7 +331,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
         if (y < _board.getSpotHeight() - 1 && _board.getSpotAt(x, y+1).getSpotColor() == opponentColor) {
             for (int i = y; i < _board.getSpotHeight(); i++) {
                 if (_board.getSpotAt(x, i).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -191,7 +340,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
         if (y > 0 && _board.getSpotAt(x, y-1).getSpotColor() == opponentColor) {
             for (int i = y; i >= 0; i--) {
                 if (_board.getSpotAt(x, i).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -201,7 +350,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             int i = y;
             for (int j = x; j < _board.getSpotWidth() && i >= 0; j++, i--) {
                 if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -211,7 +360,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             int i = y;
             for (int j = x; j >= 0 && i < _board.getSpotHeight(); j--, i++) {
                 if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -221,7 +370,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             int i = y;
             for (int j = x; j < _board.getSpotWidth() && i < _board.getSpotHeight(); i++, j++) {
                 if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
@@ -231,18 +380,18 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
             int i = y;
             for (int j = x; j >= 0 && i >= 0; j--, i--) {
                 if (_board.getSpotAt(j, i).getSpotColor() == playerColor) {
-                    return true;
+                    isValid = true;
                 }
             }
         }
 
-        return false;
+        return isValid;
     }
 
     @Override
     public void spotEntered(Spot spot) {
         // Highlight if spot is a valid move
-        if (!_gameWon && spot.isEmpty() && isValidMove(spot)) {
+        if (!_gameWon && spot.isEmpty() && isValidBoolean(spot)) {
             spot.highlightSpot();
         } else {
             return;
