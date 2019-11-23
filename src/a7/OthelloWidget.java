@@ -18,7 +18,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
 
     public OthelloWidget() {
         // Create SpotBoard and message label
-        _board = new JSpotBoard(6, 6);
+        _board = new JSpotBoard(8, 8);
         _message = new JLabel();
 
         // Set layout and place SpotBoard at the center
@@ -232,11 +232,11 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
                 }
             }
             if (black > white) {
-                _message.setText("Black won with score: " + black);
+                _message.setText("Black won: + " + black + " to " + white);
             } else if (white > black) {
-                _message.setText("White won with score " + white);
+                _message.setText("White won: " + white + " to " + black);
             } else {
-                _message.setText("Draw");
+                _message.setText("Draw: " + black + " to " + white);
             }
         } else {
             _message.setText(nextPlayerName + " to play.");
