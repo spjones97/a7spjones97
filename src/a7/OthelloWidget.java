@@ -264,11 +264,11 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
                 }
             }
             if (black > white) {
-                _message.setText("Black won: + " + black + " to " + white);
+                _message.setText("Black won. Score: " + black + " to " + white);
             } else if (white > black) {
-                _message.setText("White won: " + white + " to " + black);
+                _message.setText("White won. Score:  " + white + " to " + black);
             } else {
-                _message.setText("Draw: " + black + " to " + white);
+                _message.setText("Draw. Score: " + black + " to " + white);
             }
         } else {
             _message.setText(nextPlayerName + " to play.");
