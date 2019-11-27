@@ -18,7 +18,7 @@ public class OthelloWidget extends JPanel implements ActionListener, SpotListene
 
     public OthelloWidget() {
         // Create SpotBoard and message label
-        _board = new JSpotBoard(4, 4);
+        _board = new JSpotBoard(8, 8);
         _message = new JLabel();
 
         // Set layout and place SpotBoard at the center
