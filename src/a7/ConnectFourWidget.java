@@ -52,6 +52,7 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
             s.clearSpot();
             s.setSpotColor(s.getBackground());
         }
+        unhighlightBoard();
 
         // Reset gameWon and nextToPlay fields
         _gameWon = false;
@@ -150,6 +151,282 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
             _message.setText("Draw. Restart to play again.");
         } else {
             _message.setText(nextPlayerName + " to play.");
+        }
+
+        // Highlight spots with four in a row
+        if (_gameWon) {
+
+            // Check horizontal
+            for (int y = 0; y < 6; y++) {
+                for (int x = 0; x < 4; x++) {
+                    boolean four = true;
+                    int counter = x;
+                    while (counter < (x + 4) && counter < 7) {
+                        _board.getSpotAt(counter, y).highlightSpot();
+                        if (_board.getSpotAt(counter, y).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counter, y).isEmpty()) {
+                            four = false;
+                        }
+                        counter += 1;
+                    }
+                    if (four) {
+                        return;
+                    } else {
+                        unhighlightBoard();
+                    }
+                }
+            }
+
+            // Check vertical
+            for (int x = 0; x < 7; x++) {
+                for (int y = 0; y < 3; y++) {
+                    boolean four = true;
+                    int counter = y;
+                    while (counter < (y + 4) && counter < 6) {
+                        _board.getSpotAt(x, counter).highlightSpot();
+                        if (_board.getSpotAt(x, counter).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(x, counter).isEmpty()) {
+                            four = false;
+                        }
+                        counter += 1;
+                    }
+                    if (four) {
+                        return;
+                    } else {
+                        unhighlightBoard();
+                    }
+                }
+            }
+
+            // Check back slash
+            boolean four = true;
+            int y = 2;
+            for (int x = 0; x < 4; x+=1, y+=1) {
+                _board.getSpotAt(x, y).highlightSpot();
+                if (_board.getSpotAt(x, y).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(x, y).isEmpty()) {
+                    four = false;
+                }
+            }
+            if (four) {
+                return;
+            } else {
+                unhighlightBoard();
+            }
+
+            y = 1;
+            for (int x = 0; x < 2; x += 1, y += 1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 5) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY += 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            for (int xy = 0; xy < 3; xy += 1) {
+                four = true;
+                int counter = xy;
+                while(counter < (xy + 4) && counter < 6) {
+                    _board.getSpotAt(counter, counter).highlightSpot();
+                    if (_board.getSpotAt(counter, counter).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counter, counter).isEmpty()) {
+                        four = false;
+                    }
+                    counter += 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y = 0;
+            for (int x = 1; x < 4; x+=1, y+=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 7) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY += 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y = 0;
+            for (int x = 2; x < 4; x+=1, y+=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 7) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY += 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y=0;
+            for (int x = 3; x < 4; x+=1, y+=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 7) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY += 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            // Check forward slash
+            four = true;
+            y = 0;
+            for (int x = 3; x >= 0; x-=1, y+=1) {
+                _board.getSpotAt(x, y).highlightSpot();
+                if (_board.getSpotAt(x, y).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(x, y).isEmpty()) {
+                    four = false;
+                }
+            }
+            if (four) {
+                return;
+            } else {
+                unhighlightBoard();
+            }
+            y = 4;
+            for (int x = 0; x < 2; x+=1, y-=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 5) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY -= 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y = 5;
+            for (int x = 0; x < 3; x+=1, y-=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 6) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY -= 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y = 5;
+            for (int x = 1; x < 4; x+=1, y-=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 7) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY -= 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y = 5;
+            for (int x = 2; x < 4; x+=1, y-=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 7) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY -= 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+
+            y=5;
+            for (int x = 3; x < 4; x+=1, y-=1) {
+                four = true;
+                int counterX = x;
+                int counterY = y;
+                while (counterX < (x + 4) && counterX < 7) {
+                    _board.getSpotAt(counterX, counterY).highlightSpot();
+                    if (_board.getSpotAt(counterX, counterY).getSpotColor() != spot.getSpotColor() || _board.getSpotAt(counterX, counterY).isEmpty()) {
+                        four = false;
+                    }
+                    counterX += 1;
+                    counterY -= 1;
+                }
+                if (four) {
+                    return;
+                } else {
+                    unhighlightBoard();
+                }
+            }
+        }
+    }
+
+    void unhighlightBoard() {
+        for (Spot i : _board) {
+            i.unhighlightSpot();
         }
     }
 
@@ -383,7 +660,6 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
                 return true;
             }
         }
-
         return false;
     }
 
@@ -408,9 +684,11 @@ public class ConnectFourWidget extends JPanel implements ActionListener, SpotLis
     @Override
     public void spotExited(Spot spot) {
         // Unhighlight spot
-        int xValue = spot.getSpotX();
-        for (int i = 0; i < 6; i++) {
-            _board.getSpotAt(xValue, i).unhighlightSpot();
+        if (!_gameWon) {
+            int xValue = spot.getSpotX();
+            for (int i = 0; i < 6; i++) {
+                _board.getSpotAt(xValue, i).unhighlightSpot();
+            }
         }
     }
 }
